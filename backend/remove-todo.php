@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 $elemToRemove = $_GET['removeTodo'];
 
 $jsonTodoList = file_get_contents("todo.json", true);
-$todoList = json_decode($jsonTodoList);
+$todoList = json_decode($jsonTodoList, true);
 
 array_splice($todoList, intval($elemToRemove), 1);
 
