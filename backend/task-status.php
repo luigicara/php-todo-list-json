@@ -9,11 +9,7 @@ $index = intval($_GET['taskStatus']);
 $jsonTodoList = file_get_contents("todo.json", true);
 $todoList = json_decode($jsonTodoList, true);
 
-$boolean = $todoList[$index]["completed"];
-
-$boolean = !$boolean;
-
-$todoList[$index]["completed"] = $boolean;
+$todoList[$index]["completed"] = !($todoList[$index]["completed"]);
 
 $jsonTodoList = json_encode($todoList);
 file_put_contents('todo.json', $jsonTodoList);
