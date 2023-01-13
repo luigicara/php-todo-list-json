@@ -24,57 +24,51 @@ export default {
         })
     },
 
+    apiCall(apiQuery, params) {
+      axios.get(API_URL + apiQuery, params)
+        .then(() => {
+
+          this.getAllData();
+        });
+    },
+
+    paramsConstructor(mykey, myvalue) {
+      const params = {
+        params: {
+          [`${mykey}`]: myvalue
+        }
+      }
+
+      return params
+    },
+
     formSubmit(e) {
 
       e.preventDefault();
 
-      const params = {
-        params: {
-          'newTodo': this.newTodo
-        }
-      };
+      const params = this.paramsConstructor('newTodo', this.newTodo);
 
-      axios.get(API_URL + "add-todo.php", params)
-        .then(() => {
-
-          this.getAllData();
-        });
+      this.apiCall("add-todo.php", params);
     },
 
     removeElem(key) {
-      const params = {
-        params: {
-          'removeTodo': key
-        }
-      };
+      const params = this.paramsConstructor('removeTodo', key);
 
-      axios.get(API_URL + "remove-todo.php", params)
-        .then(() => {
-
-          this.getAllData();
-        });
+      this.apiCall("remove-todo.php", params);
     },
 
     completedTask(key) {
-      const params = {
-        params: {
-          'taskStatus': key
-        }
-      };
+      const params = this.paramsConstructor('taskStatus', key);
 
-      axios.get(API_URL + "task-status.php", params)
-        .then(() => {
-
-          this.getAllData();
-        });
+      this.apiCall("task-status.php", params);
     }
   },
+
 
   mounted() {
     this.getAllData()
   }
 }
-
 </script>
 
 <template>
@@ -89,11 +83,11 @@ export default {
           <li class="list-group-item d-flex justify-content-between align-items-center"
             v-for="(todoEl, key) in todolist" :key="key">
 
-            <span :class="todoEl.completed ? 'completed' : ''" @click="completedTask(key)">
+            <span :class="todoEl.completed ? 'completed' : ''" @click="completedTask(key)" role="button">
               {{ todoEl.text }}
             </span>
 
-            <span class="badge bg-danger rounded-pill" @click="removeElem(key)">X</span>
+            <span class="badge bg-danger rounded-pill" @click="removeElem(key)" role="button">X</span>
           </li>
         </ul>
 
